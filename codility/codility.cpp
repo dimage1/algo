@@ -1043,3 +1043,38 @@ int solution(vector<int> &A) {
 
     return minPos < A.size() ? A[minPos] : -1;
 }
+
+// Meeting rooms
+// how many rooms would be required to conduct a certain number of meetings (a minimum meeting rooms problem)
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+int minMeetingRooms(std::vector<std::vector<int>> &meetings) {
+    if (meetings.empty()) {
+        return 0;
+    }
+
+    // sort meetings by start time
+    std::sort(meetings.begin(), meetings.end(), [](const auto &x, const auto &y)
+        {
+            return x[0] < y[0]; 
+        });
+
+    // use priority queue
+    std::priority_queue<int,  std::vector<int>, std::greater<int>> rooms;
+    rooms.push(meetings[0][1]);
+
+    for (size_t i = 1 ; i < meetings.size(); i++) {
+        const int start = meetings[i][0];
+        const int end = meetings[i][1];
+
+        std::cout << "start=" << start << " top=" << rooms.top() << std::endl;
+        if (start >= rooms.top()) {
+            rooms.pop();
+        }
+        rooms.push(end);
+    }
+
+    return rooms.size();
+}
