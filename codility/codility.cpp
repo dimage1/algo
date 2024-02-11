@@ -302,10 +302,8 @@ int solution(vector<int> &A) {
 int solution(vector<int> &A) {
     // A: -10k .. 10k; A.size(): 2 .. 100.000
     int cache[100000] = {};
-    bool cacheInit[100000] = {};
 
     cache[0] = A[0];
-    cacheInit[0] = true;
     for (size_t i = 1; i < A.size(); i++) {
         int maxSum = INT_MIN;
 

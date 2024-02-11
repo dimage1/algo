@@ -17,7 +17,7 @@ static constexpr size_t TABLE_MAX_SIZE = 10000;
 static constexpr size_t TABLE_DEFAULT_X_SIZE = 7;
 static constexpr size_t TABLE_DEFAULT_Y_SIZE = 20;
 
-#define TABLE_DEFAULT_CONFIG "1,1 2,3 2,4 2,5"
+#define TABLE_DEFAULT_CONFIG "1,1 2,3 2,4 2,5 3,3 3,4 3,7"
 
 struct LifeTable
 {
@@ -36,7 +36,7 @@ static void printTable(const LifeTable &table)
     {
         for (size_t j = 0; j < table.sizeY; j++)
         {
-            printf("%c", table.data[table.curr][i][j] ? 'o' : '.');
+            printf("%c", table.data[table.curr][j][i] ? 'o' : '.');
         }
         printf("\n");
     }
@@ -82,25 +82,25 @@ static void doOneStep(LifeTable &table)
             // 1 2 3
             // 4 x 5
             // 6 7 8
-            if ((i > 0) && (j > 0) && data[i - 1][j - 1]) sum++;
+            if ((i > 0) && (j > 0) && data[j - 1][i - 1]) sum++;
             if (j > 0 && data[i][j - 1]) sum++;
-            if ((i < szX - 1) && j > 0 && data[i + 1][j - 1]) sum++;
+            if ((i < szX - 1) && j > 0 && data[j - 1][i + 1]) sum++;
 
-            if (i > 0 && data[i - 1][j]) sum++;
+            if (i > 0 && data[j][i - 1]) sum++;
             if ((i < szX - 1) && data[i + 1][j]) sum++;
 
-            if ((i > 0) && (j < szY - 1) && data[i - 1][j + 1]) sum++;
-            if ((j < szY - 1) && data[i][j + 1]) sum++;
-            if ((i < szX - 1) && (j < szY - 1) && data[i + 1][j + 1]) sum++;
+            if ((i > 0) && (j < szY - 1) && data[j + 1][i - 1]) sum++;
+            if ((j < szY - 1) && data[j + 1][i]) sum++;
+            if ((i < szX - 1) && (j < szY - 1) && data[j + 1][i + 1]) sum++;
 
-            const bool alive = data[i][j];
+            const bool alive = data[j][i];
             if (sum < 2 || sum > 3)
             {
-                table.data[next][i][j] = false;
+                table.data[next][j][i] = false;
             }
             else if (alive || sum == 3)
             {
-                table.data[next][i][j] = true;
+                table.data[next][j][i] = true;
             }
         }
     }
@@ -108,6 +108,7 @@ static void doOneStep(LifeTable &table)
 
 }
 
+// Example: ./life 6 16 "0,0 0,1 0,2 1,2 2,2 3,2 4,2 10,1 8,2 6,6 5,5 5,4 5,3 4,1 4,2 8,1 8,2 8,3 15,1 15,2 15,3 15,4 14,2 14,3 14,4"
 int main(int argc, char **argv)
 {
     size_t sizeX = TABLE_DEFAULT_X_SIZE;
