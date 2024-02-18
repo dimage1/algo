@@ -25,6 +25,16 @@ public:
     LRUCache(size_t size) : m_MaxSize(size){};
 
     void put(const KEY &key, const VAL &val) {
+        auto iter = m_Map.find(key);
+        if (iter != m_Map.end()) {
+            // update value
+            *(iter->second) = make_pair(key, val);
+
+            // refresh usage
+            get(key);
+            return;
+        }
+
         if (m_List.size() == m_MaxSize) {
             // remove the last used elem
             KEY k = m_List.back().first;

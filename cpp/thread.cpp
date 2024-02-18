@@ -80,6 +80,5 @@ int main() {
         cout << "max queue Size=" << statMaxSize << ", sum=" << sum << std::endl;
         statMaxSize = 0;
     }
-
     return 0;
 }
